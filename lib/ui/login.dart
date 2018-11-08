@@ -33,20 +33,21 @@ class LoginApp extends StatelessWidget {
     var _form = formKey.currentState;
     if (_form.validate()) {
       _form.save();
-    } 
+    }
   }
   @override
   Widget build(BuildContext context) {
     final MainBloc bloc = BlocProvider.of<MainBloc>(context);
     final LoginBloc loginBloc = BlocProvider.of<LoginBloc>(context);
+   
 
     return   StreamBuilder(
             stream: loginBloc.outLoginList,
             initialData: LoginModel.initial(),
             builder: (BuildContext context, AsyncSnapshot<LoginModel> snapshot){
-              var vm =  snapshot.data; 
-              print(mainModel.isLogin);
-             
+              var vm =  snapshot.data;
+              var _username = vm.username;
+              var _password = vm.password;
 
               
               return Scaffold(
@@ -106,49 +107,51 @@ class LoginApp extends StatelessWidget {
                                                     child: new Text('登陆${vm.username}'),
                                                     onPressed: () {
                                                       _forSubmitted(); // save form
-                                                      print(vm.username);
                                                       
-                                                       FocusScope.of(context).requestFocus(new FocusNode());
+                                                      print(_username);
+                                                      vm.enabled = true;
+                                                      loginBloc.setData(vm);
          
-                                                        if (vm.username == '' &&  vm.password == '') {
-                                                          vm.modelContent =  '用户名和密码不能为空';
-                                                          vm.offStage = false;
-                                                          loginBloc.setData(vm);
+                                                        // if (_username == '' &&  _password == '') {
+                                                        //   vm.modelContent =  '用户名和密码不能为空';
+                                                        //   vm.offStage = false;
+                                                        //   loginBloc.setData(vm);
 
-                                                        } else if (vm.username != '' && vm.password == '') {
-                                                          vm.modelContent =  '密码不能为空';
-                                                          vm.offStage = false;
-                                                          loginBloc.setData(vm);
+                                                        // } else if (_username != '' && _password == '') {
+                                                        //   vm.modelContent =  '密码不能为空';
+                                                        //   vm.offStage = false;
+                                                        //   loginBloc.setData(vm);
 
-                                                        } else if (vm.username == '' && vm.password != '') {
-                                                          vm.modelContent =  '用户名不能为空';
-                                                          vm.offStage = false;
-                                                          loginBloc.setData(vm);
+                                                        // } else if (_username == '' && _password != '') {
+                                                        //   vm.modelContent =  '用户名不能为空';
+                                                        //   vm.offStage = false;
+                                                        //   loginBloc.setData(vm);
 
 
-                                                        } else {
-                                                          vm.shadeHeight = MediaQuery.of(context).size.height;
-                                                          vm.shadeWidth = MediaQuery.of(context).size.width;
-                                                          vm.radiusLoading = 30.0;
-                                                          vm.loginLoadding = true;
-                                                          loginBloc.setData(vm);
+                                                        // } else {
+                                                        //   vm.shadeHeight = MediaQuery.of(context).size.height;
+                                                        //   vm.shadeWidth = MediaQuery.of(context).size.width;
+                                                        //   vm.radiusLoading = 30.0;
+                                                        //   vm.loginLoadding = true;
+                                                        //   loginBloc.setData(vm);
                                                           
                                                       
-                                                          Util.setTimeOut(2, () {
-                                                            vm.shadeHeight = 0.0;
-                                                            vm.shadeWidth = 0.0;
-                                                            vm.radiusLoading = 0.0;
-                                                            vm.loginLoadding = false;
-                                                            loginBloc.setData(vm);
-                                                            mainModel.isLogin = true;
-                                                            bloc.setData(mainModel);
+                                                        //   Util.setTimeOut(2, () {
+                                                        //     vm.shadeHeight = 0.0;
+                                                        //     vm.shadeWidth = 0.0;
+                                                        //     vm.radiusLoading = 0.0;
+                                                        //     vm.loginLoadding = false;
+                                                        //     loginBloc.setData(vm);
+                                                        //     mainModel.isLogin = true;
+                                                        //     bloc.setData(mainModel);
                                                             
                                                           
-                                                            // Navigator.pushNamed(context, '/home');
+                                                        //     // Navigator.pushNamed(context, '/home');
 
-                                                          });
+                                                        //   });
 
-                                                        }
+                                                        // } 
+                                                        // FocusScope.of(context).requestFocus(new FocusNode());
 
                                                     }
                                                 ),

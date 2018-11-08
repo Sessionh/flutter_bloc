@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         initialData: new MainModel(isLogin: false),
         builder: (BuildContext context, AsyncSnapshot<MainModel> snapshot) {
            var result = snapshot.data;
-          return result.isLogin ? User(mainModel: result) : Login(mainModel: result);
+          return result.isLogin ? Home(mainModel: result) : Login(mainModel: result);
         }
 
       )

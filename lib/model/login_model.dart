@@ -16,6 +16,7 @@ class LoginModel{
   double radiusLoading; // 动态加载圆半径
   bool offStage; // 提示框显示 or 隐藏
   String modelContent; // 提示框内容
+  bool enabled; // form input 是否允许用户输入值
 
   LoginModel({
     this.type,
@@ -33,7 +34,8 @@ class LoginModel{
     this.shadeWidth,
     this.radiusLoading,
     this.offStage,
-    this.modelContent
+    this.modelContent,
+    this.enabled
     });
 
      LoginModel.initial(
@@ -53,6 +55,7 @@ class LoginModel{
         this.radiusLoading = 0.1,
         this.offStage = true,
         this.modelContent = '',
+        this.enabled = true,
         });
   
 }
