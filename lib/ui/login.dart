@@ -90,7 +90,109 @@ class LoginApp extends StatelessWidget {
                                                     color: Colors.white,
                                                   ),
                                                   child: new Center(
-                                                    child:  LoginForm(formKey)
+                                                    child:  Form(
+              key: formKey,
+              onChanged: () {               
+                
+              },
+              autovalidate: false, //开启验证input
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+
+                  Row(
+                    children: <Widget>[
+                      new Container(
+                      child: new Icon(Icons.person, color: Colors.black54),
+                      width: 60.0,
+                    ),
+                    new Expanded(
+                      child: TextFormField(
+                          decoration: InputDecoration(labelText: '用户名', border: InputBorder.none),
+                          obscureText: false,
+                          onSaved: (val) {
+                              print(val);
+                              _username = val;
+                              print('33');
+                              loginBloc.setData(vm);
+
+                          },
+                          keyboardType: TextInputType.text,
+                          autocorrect: false,
+                          enabled: vm.enabled, //是否允许用户输入
+                          style: TextStyle(
+                              color: vm.isDarkTheme
+                                  ? Colors.white
+                                  : Colors.black),
+                        ),
+                    )
+
+                    ]
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 25.0),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(width: 0.3, color: Colors.lightBlue.shade900),
+                      ),
+                    ),
+                  ),
+                  
+                  Row(
+                    children: <Widget>[
+                      new Container(
+                        child: new Icon(Icons.https, color: Colors.black54),
+                        width: 60.0,
+                      ),
+                      new Expanded(
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            labelText: '密码',
+                            border: InputBorder.none
+                          ),
+                          focusNode:FocusNode(),
+                          enabled: vm.enabled, //是否允许用户输入
+                          onSaved: (val) {                             
+                              _password = val;
+                              loginBloc.setData(vm);
+                          },
+                          keyboardType: TextInputType.text,
+                          autocorrect: false,
+                          obscureText:  vm.obscureText, // 是否可见
+                          style: TextStyle(
+                              color: vm.isDarkTheme
+                                  ? Colors.white
+                                  : Colors.black
+                          ),
+                        ),
+                      ),
+                      new Container(
+                        child: new IconButton(
+                          icon: loginBloc.iconType(vm.iconTypePassword),
+                          onPressed: () {
+                            if (vm.iconTypePassword == 0) {
+                              vm.iconTypePassword = 1;
+                              vm.obscureText = false;
+                            
+                            } else {
+                              vm.iconTypePassword = 0;
+                              vm.obscureText = true;
+                            }
+                             loginBloc.setData(vm);
+
+                          },
+
+                        ),
+                        
+                        width: 60.0,
+                      ),
+
+                    ]
+                  ),
+                
+                ],
+              ),
+            ),
                                                   ),
                                                 ),
                                               ),
@@ -112,46 +214,46 @@ class LoginApp extends StatelessWidget {
                                                       vm.enabled = true;
                                                       loginBloc.setData(vm);
          
-                                                        // if (_username == '' &&  _password == '') {
-                                                        //   vm.modelContent =  '用户名和密码不能为空';
-                                                        //   vm.offStage = false;
-                                                        //   loginBloc.setData(vm);
+                                                        if (_username == '' &&  _password == '') {
+                                                          vm.modelContent =  '用户名和密码不能为空';
+                                                          vm.offStage = false;
+                                                          loginBloc.setData(vm);
 
-                                                        // } else if (_username != '' && _password == '') {
-                                                        //   vm.modelContent =  '密码不能为空';
-                                                        //   vm.offStage = false;
-                                                        //   loginBloc.setData(vm);
+                                                        } else if (_username != '' && _password == '') {
+                                                          vm.modelContent =  '密码不能为空';
+                                                          vm.offStage = false;
+                                                          loginBloc.setData(vm);
 
-                                                        // } else if (_username == '' && _password != '') {
-                                                        //   vm.modelContent =  '用户名不能为空';
-                                                        //   vm.offStage = false;
-                                                        //   loginBloc.setData(vm);
+                                                        } else if (_username == '' && _password != '') {
+                                                          vm.modelContent =  '用户名不能为空';
+                                                          vm.offStage = false;
+                                                          loginBloc.setData(vm);
 
 
-                                                        // } else {
-                                                        //   vm.shadeHeight = MediaQuery.of(context).size.height;
-                                                        //   vm.shadeWidth = MediaQuery.of(context).size.width;
-                                                        //   vm.radiusLoading = 30.0;
-                                                        //   vm.loginLoadding = true;
-                                                        //   loginBloc.setData(vm);
+                                                        } else {
+                                                          vm.shadeHeight = MediaQuery.of(context).size.height;
+                                                          vm.shadeWidth = MediaQuery.of(context).size.width;
+                                                          vm.radiusLoading = 30.0;
+                                                          vm.loginLoadding = true;
+                                                          loginBloc.setData(vm);
                                                           
                                                       
-                                                        //   Util.setTimeOut(2, () {
-                                                        //     vm.shadeHeight = 0.0;
-                                                        //     vm.shadeWidth = 0.0;
-                                                        //     vm.radiusLoading = 0.0;
-                                                        //     vm.loginLoadding = false;
-                                                        //     loginBloc.setData(vm);
-                                                        //     mainModel.isLogin = true;
-                                                        //     bloc.setData(mainModel);
+                                                          Util.setTimeOut(2, () {
+                                                            vm.shadeHeight = 0.0;
+                                                            vm.shadeWidth = 0.0;
+                                                            vm.radiusLoading = 0.0;
+                                                            vm.loginLoadding = false;
+                                                            loginBloc.setData(vm);
+                                                            mainModel.isLogin = true;
+                                                            bloc.setData(mainModel);
                                                             
                                                           
-                                                        //     // Navigator.pushNamed(context, '/home');
+                                                            // Navigator.pushNamed(context, '/home');
 
-                                                        //   });
+                                                          });
 
-                                                        // } 
-                                                        // FocusScope.of(context).requestFocus(new FocusNode());
+                                                        } 
+                                                        FocusScope.of(context).requestFocus(new FocusNode());
 
                                                     }
                                                 ),

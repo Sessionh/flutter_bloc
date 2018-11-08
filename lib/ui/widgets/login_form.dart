@@ -78,9 +78,9 @@ class LoginForm extends StatelessWidget{
                             labelText: '密码',
                             border: InputBorder.none
                           ),
+                          focusNode:FocusNode(),
                           enabled: vm.enabled, //是否允许用户输入
-                          onSaved: (val) {
-                              print(val);
+                          onSaved: (val) {                             
                               vm.password = val;
                               loginBloc.setData(vm);
                           },
