@@ -72,15 +72,17 @@ class HomeApp extends StatelessWidget {
                             },
                             ),
                             new Expanded(
-                              child: new Text(
-                                  'Let`s Go',
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                      fontSize: 18.0,
-                                      fontFamily: 'Dosis',
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white
-                                  )),
+                              child: LogoApp('Let`s Go'),
+                              
+                              // new Text(
+                              //     'Let`s Go',
+                              //     textAlign: TextAlign.center,
+                              //     style: const TextStyle(
+                              //         fontSize: 18.0,
+                              //         fontFamily: 'Dosis',
+                              //         fontWeight: FontWeight.w400,
+                              //         color: Colors.white
+                              //     )),
                             ),
                           ],
                         ),
@@ -125,4 +127,52 @@ class HomeApp extends StatelessWidget {
       },
     );
    }
+}
+
+class LogoApp extends StatefulWidget {
+  final String text;
+  LogoApp(this.text);
+  _LogoAppState createState() => new _LogoAppState(text);
+}
+
+class _LogoAppState extends State<LogoApp> with SingleTickerProviderStateMixin {
+  final String text;
+  _LogoAppState(this.text);
+  Animation<double> animation;
+  AnimationController controller;
+
+  initState() {
+    super.initState();
+    controller = new AnimationController(
+        duration: const Duration(milliseconds: 1000), vsync: this);
+    animation = new Tween(begin: 33.0, end: 18.0).animate(
+       CurvedAnimation(
+          parent: controller,
+          curve: Curves.elasticOut,
+        )
+    )
+      ..addListener(() {
+        setState(() {
+          // the state that has changed here is the animation object’s value
+        });
+      });
+    controller.forward();
+  }
+
+  Widget build(BuildContext context) {
+    return new Text(
+          text,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: animation.value,
+              fontFamily: 'Dosis',
+              fontWeight: FontWeight.w400,
+              color: Colors.white
+      ));
+  }
+
+  dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 }

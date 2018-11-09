@@ -17,6 +17,7 @@ class HomeContent extends StatelessWidget{
                   Icon(FontAwesomeIcons.affiliatetheme),
                   'FLIGHT',
                   'FLIGHTs',
+                  1,2
                 ),
                 Container(
                   height: 1.0,
@@ -28,6 +29,7 @@ class HomeContent extends StatelessWidget{
                   Icon(FontAwesomeIcons.bug),
                   'FLIGHT1',
                   'FLIGHTs',
+                  3,4
                 ),
                 Container(
                   height: 1.0,
@@ -39,20 +41,22 @@ class HomeContent extends StatelessWidget{
                   Icon(FontAwesomeIcons.lightbulb),
                   'FLIGHT2',
                   'FLIGHTs',
+                  5,6
                 ),
               ],
             )
             
           );
   }
-  iconRows(BuildContext context, Icon iconLeft,Icon iconRight, String textLeft, String textRight) => Row(
+  iconRows(BuildContext context, Icon iconLeft,Icon iconRight,
+            String textLeft, String textRight, int typeLeft, int typeRight) => Row(
           children: <Widget>[
             Expanded(
               child: Container(
                 height:  (MediaQuery.of(context).size.height - 85.0)/3,
                 color: Color.fromRGBO(21, 21, 21, 0.8),
                 child: Center(
-                  child: iconState(iconLeft, textLeft),
+                  child: iconState(iconLeft, textLeft, typeLeft),
                 )
                 
               ),
@@ -66,24 +70,26 @@ class HomeContent extends StatelessWidget{
                 height:  (MediaQuery.of(context).size.height - 85.0)/3,
                 color: Color.fromRGBO(21, 21, 21, 0.8),
                 child: Center(
-                  child: iconState(iconRight, textRight),
+                  child: iconState(iconRight, textRight, typeRight),
                 )
               ),
             )
           ],
         );
-  iconState(Icon icon, String text) =>Stack(
+  iconState(Icon icon, String text, int type) =>Stack(
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(bottom: 20.0),
-          child:  IconButton(
-            icon:  icon,
-            color: Color.fromRGBO(114, 74, 158, 1.0),
-            iconSize: 59.0,
-            onPressed: () {
-              print(33);
-            },
-          )
+          child:  
+          LogoApps('', icon, type)
+          // IconButton(
+          //   icon:  icon,
+          //   color: Color.fromRGBO(114, 74, 158, 1.0),
+          //   iconSize: 59.0,
+          //   onPressed: () {
+          //     print(type);
+          //   },
+          // )
         ),
         Padding(
           padding: EdgeInsets.only(top: 78.0, left: 8.0),
@@ -100,4 +106,55 @@ class HomeContent extends StatelessWidget{
       ],
     );
     
+}
+
+class LogoApps extends StatefulWidget {
+  final String text;
+  final Icon icon;
+  final int type;
+  LogoApps(this.text, this.icon, this.type);
+  _LogoAppState createState() => new _LogoAppState(text, icon, type);
+}
+
+class _LogoAppState extends State<LogoApps> with SingleTickerProviderStateMixin {
+  final String text;
+  final Icon icon;
+   final int type;
+  _LogoAppState(this.text, this.icon, this.type);
+  Animation<double> animation;
+  AnimationController controller;
+
+  initState() {
+    super.initState();
+    controller = new AnimationController(
+        duration: const Duration(milliseconds: 1000), vsync: this);
+    animation = new Tween(begin: 20.0, end: 59.0).animate(
+       CurvedAnimation(
+          parent: controller,
+          curve: Curves.elasticOut,
+        )
+    )
+      ..addListener(() {
+        setState(() {
+          // the state that has changed here is the animation object’s value
+        });
+      });
+    controller.forward();
+  }
+
+  Widget build(BuildContext context) {
+    return IconButton(
+            icon:  icon,
+            color: Color.fromRGBO(114, 74, 158, 1.0),
+            iconSize: animation.value,
+            onPressed: () {
+              print(type);
+            },
+          );
+  }
+
+  dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 }

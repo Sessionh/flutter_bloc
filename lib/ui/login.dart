@@ -203,7 +203,7 @@ class LoginApp extends StatelessWidget {
                                                   child:  new CupertinoButton(
                                                     color: Colors.blue[400],
                                                     pressedOpacity: 0.0,
-                                                    child: new Text('登陆${vm.username}'),
+                                                    child: new Text('登陆'),
                                                     onPressed: () {
                                                       _forSubmitted(); // save form
                                                       loginBloc.loginSubmit(vm, context, bloc, mainModel);

@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/bloc/bloc_provider.dart';
 import 'package:flutter_bloc/model/user_model.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:flutter/material.dart';
 
 class UserBloc implements BlocBase {
   PublishSubject<UserModel> _moviesController = PublishSubject<UserModel>();
