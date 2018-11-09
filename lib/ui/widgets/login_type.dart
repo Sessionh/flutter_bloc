@@ -49,6 +49,7 @@ class LoginType extends StatelessWidget{
                     onPressed: () {
                       vm.type = 3.0;
                       vm.login = Colors.black;
+                      vm.signIn = Colors.white;
                       loginBloc.setData(vm);
                       
                      

@@ -5,10 +5,8 @@ import 'package:flutter_bloc/bloc/main_bloc.dart';
 import 'package:flutter_bloc/model/main_model.dart';
 import 'package:flutter_bloc/bloc/login_bloc.dart';
 import 'package:flutter_bloc/model/login_model.dart';
-import 'package:flutter_bloc/libs/util.dart';
 import 'package:flutter_bloc/common_widgets/Model.dart';
 import 'package:flutter_bloc/ui/widgets/login_type.dart';
-import 'package:flutter_bloc/ui/widgets/login_form.dart';
 
 class Login extends StatelessWidget {
   final MainModel mainModel;
@@ -46,8 +44,108 @@ class LoginApp extends StatelessWidget {
             initialData: LoginModel.initial(),
             builder: (BuildContext context, AsyncSnapshot<LoginModel> snapshot){
               var vm =  snapshot.data;
-              var _username = vm.username;
-              var _password = vm.password;
+              loginForms() => Form(
+                key: formKey,
+                onChanged: () {               
+                  
+                },
+                autovalidate: false, //开启验证input
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+
+                    Row(
+                      children: <Widget>[
+                        new Container(
+                        child: new Icon(Icons.person, color: Colors.black54),
+                        width: 60.0,
+                      ),
+                      new Expanded(
+                        child: TextFormField(
+                            decoration: InputDecoration(labelText: '用户名', border: InputBorder.none),
+                            obscureText: false,
+                            onSaved: (val) {
+                                vm.username = val;
+                                loginBloc.setData(vm);
+
+                            },
+                            keyboardType: TextInputType.text,
+                            autocorrect: false,
+                            enabled: vm.enabled, //是否允许用户输入
+                            style: TextStyle(
+                                color: vm.isDarkTheme
+                                    ? Colors.white
+                                    : Colors.black),
+                          ),
+                      )
+
+                      ]
+                    ),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 25.0),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(width: 0.3, color: Colors.lightBlue.shade900),
+                        ),
+                      ),
+                    ),
+                    
+                    Row(
+                      children: <Widget>[
+                        new Container(
+                          child: new Icon(Icons.https, color: Colors.black54),
+                          width: 60.0,
+                        ),
+                        new Expanded(
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              labelText: '密码',
+                              border: InputBorder.none
+                            ),
+                            focusNode:FocusNode(),
+                            enabled: vm.enabled, //是否允许用户输入
+                            onSaved: (val) {                             
+                                vm.password = val;
+                                loginBloc.setData(vm);
+                            },
+                            keyboardType: TextInputType.text,
+                            autocorrect: false,
+                            obscureText:  vm.obscureText, // 是否可见
+                            style: TextStyle(
+                                color: vm.isDarkTheme
+                                    ? Colors.white
+                                    : Colors.black
+                            ),
+                          ),
+                        ),
+                        new Container(
+                          child: new IconButton(
+                            icon: loginBloc.iconType(vm.iconTypePassword),
+                            onPressed: () {
+                              if (vm.iconTypePassword == 0) {
+                                vm.iconTypePassword = 1;
+                                vm.obscureText = false;
+                              
+                              } else {
+                                vm.iconTypePassword = 0;
+                                vm.obscureText = true;
+                              }
+                              loginBloc.setData(vm);
+
+                            },
+
+                          ),
+                          
+                          width: 60.0,
+                        ),
+
+                      ]
+                    ),
+                  
+                  ],
+                ),
+              );
+           
 
               
               return Scaffold(
@@ -90,109 +188,8 @@ class LoginApp extends StatelessWidget {
                                                     color: Colors.white,
                                                   ),
                                                   child: new Center(
-                                                    child:  Form(
-              key: formKey,
-              onChanged: () {               
-                
-              },
-              autovalidate: false, //开启验证input
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-
-                  Row(
-                    children: <Widget>[
-                      new Container(
-                      child: new Icon(Icons.person, color: Colors.black54),
-                      width: 60.0,
-                    ),
-                    new Expanded(
-                      child: TextFormField(
-                          decoration: InputDecoration(labelText: '用户名', border: InputBorder.none),
-                          obscureText: false,
-                          onSaved: (val) {
-                              print(val);
-                              _username = val;
-                              print('33');
-                              loginBloc.setData(vm);
-
-                          },
-                          keyboardType: TextInputType.text,
-                          autocorrect: false,
-                          enabled: vm.enabled, //是否允许用户输入
-                          style: TextStyle(
-                              color: vm.isDarkTheme
-                                  ? Colors.white
-                                  : Colors.black),
-                        ),
-                    )
-
-                    ]
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 25.0),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(width: 0.3, color: Colors.lightBlue.shade900),
-                      ),
-                    ),
-                  ),
-                  
-                  Row(
-                    children: <Widget>[
-                      new Container(
-                        child: new Icon(Icons.https, color: Colors.black54),
-                        width: 60.0,
-                      ),
-                      new Expanded(
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            labelText: '密码',
-                            border: InputBorder.none
-                          ),
-                          focusNode:FocusNode(),
-                          enabled: vm.enabled, //是否允许用户输入
-                          onSaved: (val) {                             
-                              _password = val;
-                              loginBloc.setData(vm);
-                          },
-                          keyboardType: TextInputType.text,
-                          autocorrect: false,
-                          obscureText:  vm.obscureText, // 是否可见
-                          style: TextStyle(
-                              color: vm.isDarkTheme
-                                  ? Colors.white
-                                  : Colors.black
-                          ),
-                        ),
-                      ),
-                      new Container(
-                        child: new IconButton(
-                          icon: loginBloc.iconType(vm.iconTypePassword),
-                          onPressed: () {
-                            if (vm.iconTypePassword == 0) {
-                              vm.iconTypePassword = 1;
-                              vm.obscureText = false;
-                            
-                            } else {
-                              vm.iconTypePassword = 0;
-                              vm.obscureText = true;
-                            }
-                             loginBloc.setData(vm);
-
-                          },
-
-                        ),
-                        
-                        width: 60.0,
-                      ),
-
-                    ]
-                  ),
-                
-                ],
-              ),
-            ),
+                                                    child:  
+                                                    loginForms(),
                                                   ),
                                                 ),
                                               ),
@@ -209,51 +206,7 @@ class LoginApp extends StatelessWidget {
                                                     child: new Text('登陆${vm.username}'),
                                                     onPressed: () {
                                                       _forSubmitted(); // save form
-                                                      
-                                                      print(_username);
-                                                      vm.enabled = true;
-                                                      loginBloc.setData(vm);
-         
-                                                        if (_username == '' &&  _password == '') {
-                                                          vm.modelContent =  '用户名和密码不能为空';
-                                                          vm.offStage = false;
-                                                          loginBloc.setData(vm);
-
-                                                        } else if (_username != '' && _password == '') {
-                                                          vm.modelContent =  '密码不能为空';
-                                                          vm.offStage = false;
-                                                          loginBloc.setData(vm);
-
-                                                        } else if (_username == '' && _password != '') {
-                                                          vm.modelContent =  '用户名不能为空';
-                                                          vm.offStage = false;
-                                                          loginBloc.setData(vm);
-
-
-                                                        } else {
-                                                          vm.shadeHeight = MediaQuery.of(context).size.height;
-                                                          vm.shadeWidth = MediaQuery.of(context).size.width;
-                                                          vm.radiusLoading = 30.0;
-                                                          vm.loginLoadding = true;
-                                                          loginBloc.setData(vm);
-                                                          
-                                                      
-                                                          Util.setTimeOut(2, () {
-                                                            vm.shadeHeight = 0.0;
-                                                            vm.shadeWidth = 0.0;
-                                                            vm.radiusLoading = 0.0;
-                                                            vm.loginLoadding = false;
-                                                            loginBloc.setData(vm);
-                                                            mainModel.isLogin = true;
-                                                            bloc.setData(mainModel);
-                                                            
-                                                          
-                                                            // Navigator.pushNamed(context, '/home');
-
-                                                          });
-
-                                                        } 
-                                                        FocusScope.of(context).requestFocus(new FocusNode());
+                                                      loginBloc.loginSubmit(vm, context, bloc, mainModel);
 
                                                     }
                                                 ),
@@ -283,7 +236,6 @@ class LoginApp extends StatelessWidget {
                                 but0nPressed: () {
                                   vm.offStage = true;
                                   loginBloc.setData(vm);
-                              
                               }),
                             
                               new Container(
