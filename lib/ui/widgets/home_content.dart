@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_bloc/page/user.dart';
 
 class HomeContent extends StatelessWidget{
   @override
@@ -56,7 +57,7 @@ class HomeContent extends StatelessWidget{
                 height:  (MediaQuery.of(context).size.height - 85.0)/3,
                 color: Color.fromRGBO(21, 21, 21, 0.8),
                 child: Center(
-                  child: iconState(iconLeft, textLeft, typeLeft),
+                  child: iconState(iconLeft, textLeft, typeLeft, context),
                 )
                 
               ),
@@ -70,26 +71,27 @@ class HomeContent extends StatelessWidget{
                 height:  (MediaQuery.of(context).size.height - 85.0)/3,
                 color: Color.fromRGBO(21, 21, 21, 0.8),
                 child: Center(
-                  child: iconState(iconRight, textRight, typeRight),
+                  child: iconState(iconRight, textRight, typeRight, context),
                 )
               ),
             )
           ],
         );
-  iconState(Icon icon, String text, int type) =>Stack(
+  iconState(Icon icon, String text, int type, BuildContext context) =>Stack(
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(bottom: 20.0),
           child:  
-          LogoApps('', icon, type)
-          // IconButton(
-          //   icon:  icon,
-          //   color: Color.fromRGBO(114, 74, 158, 1.0),
-          //   iconSize: 59.0,
-          //   onPressed: () {
-          //     print(type);
-          //   },
-          // )
+          LogoApps('', icon, type, (type) {
+            print(type);
+            if (type == 1) {
+               Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => User(),
+                  ));
+            }
+          })
         ),
         Padding(
           padding: EdgeInsets.only(top: 78.0, left: 8.0),
@@ -112,15 +114,17 @@ class LogoApps extends StatefulWidget {
   final String text;
   final Icon icon;
   final int type;
-  LogoApps(this.text, this.icon, this.type);
-  _LogoAppState createState() => new _LogoAppState(text, icon, type);
+  final Function pageFul;
+  LogoApps(this.text, this.icon, this.type, this.pageFul);
+  _LogoAppState createState() => new _LogoAppState(text, icon, type, pageFul);
 }
 
 class _LogoAppState extends State<LogoApps> with SingleTickerProviderStateMixin {
   final String text;
   final Icon icon;
-   final int type;
-  _LogoAppState(this.text, this.icon, this.type);
+  final int type;
+   final Function pageFul;
+  _LogoAppState(this.text, this.icon, this.type, this.pageFul);
   Animation<double> animation;
   AnimationController controller;
 
@@ -148,7 +152,7 @@ class _LogoAppState extends State<LogoApps> with SingleTickerProviderStateMixin 
             color: Color.fromRGBO(114, 74, 158, 1.0),
             iconSize: animation.value,
             onPressed: () {
-              print(type);
+              pageFul(type);
             },
           );
   }

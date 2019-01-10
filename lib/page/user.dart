@@ -35,8 +35,9 @@ class UserApp extends StatelessWidget {
           body: LogoApp(),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              mainModel.isLogin = false;
-              main.setData(mainModel);
+              // mainModel.isLogin = false;
+              // main.setData(mainModel);
+              Navigator.pop(context);
             },
             tooltip: 'Increment',
             child: Icon(Icons.add),

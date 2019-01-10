@@ -51,7 +51,6 @@ class LoginApp extends StatelessWidget {
                 },
                 autovalidate: false, //开启验证input
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
 
                     Row(

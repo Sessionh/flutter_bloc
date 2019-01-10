@@ -6,6 +6,7 @@ import 'package:flutter_bloc/model/home_model.dart';
 import 'package:flutter_bloc/bloc/home_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_bloc/ui/widgets/home_content.dart';
+import 'package:flutter_bloc/ui/widgets/home_drawer.dart';
 class Home extends StatelessWidget {
   final MainModel mainModel;
   Home({Key key, @required this.mainModel}) : super(key: key);
@@ -38,9 +39,7 @@ class HomeApp extends StatelessWidget {
           key: _drawerKey,
           backgroundColor: Colors.black87,
           drawer: Drawer(
-            child: Container(
-              child: Text('333')
-            )
+            child: HomeDrawer(vm.title)
           ),
           body: Column(
             children: <Widget>[
@@ -73,16 +72,6 @@ class HomeApp extends StatelessWidget {
                             ),
                             new Expanded(
                               child: LogoApp('Let`s Go'),
-                              
-                              // new Text(
-                              //     'Let`s Go',
-                              //     textAlign: TextAlign.center,
-                              //     style: const TextStyle(
-                              //         fontSize: 18.0,
-                              //         fontFamily: 'Dosis',
-                              //         fontWeight: FontWeight.w400,
-                              //         color: Colors.white
-                              //     )),
                             ),
                           ],
                         ),
